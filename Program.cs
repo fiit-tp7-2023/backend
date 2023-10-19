@@ -4,20 +4,17 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 
-namespace tp_backend
+namespace TAG
 {
     public class Program
     {
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
-            builder.Host.ConfigureAppConfiguration((hostingContext, config) =>
-            {
-                config.SetBasePath(hostingContext.HostingEnvironment.ContentRootPath);
-                config.AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
-                config.AddJsonFile($"appsettings.{hostingContext.HostingEnvironment.EnvironmentName}.json", optional: true);
-                config.AddEnvironmentVariables();
-            });
+            builder.Configuration.SetBasePath(builder.Environment.ContentRootPath);
+            builder.Configuration.AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+            builder.Configuration.AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", optional: true);
+            builder.Configuration.AddEnvironmentVariables();
 
             // Add services to the container.
             builder.Services.AddControllers();

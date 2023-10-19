@@ -9,7 +9,7 @@
     }
   },
   "profiles": {
-    "tp_backend": {
+    "TAG": {
       "commandName": "Project",
       "dotnetRunMessages": true,
       "launchBrowser": true,
