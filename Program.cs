@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Neo4jClient;
 
 namespace TAG
 {
@@ -18,6 +19,14 @@ namespace TAG
 
             // Add services to the container.
             builder.Services.AddControllers();
+
+            // Neo4j
+            var neo4jUri = builder.Configuration["Neo4j:Uri"];
+            var neo4jUsername = builder.Configuration["Neo4j:Username"];
+            var neo4jPassword = builder.Configuration["Neo4j:Password"];
+            var neo4jClient = new BoltGraphClient(new Uri(neo4jUri!), neo4jUsername, neo4jPassword);
+            neo4jClient.ConnectAsync();
+            builder.Services.AddSingleton<IGraphClient>(neo4jClient);
 
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
