@@ -14,7 +14,10 @@ namespace TAG
             var builder = WebApplication.CreateBuilder(args);
             builder.Configuration.SetBasePath(builder.Environment.ContentRootPath);
             builder.Configuration.AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
-            builder.Configuration.AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", optional: true);
+            builder.Configuration.AddJsonFile(
+                $"appsettings.{builder.Environment.EnvironmentName}.json",
+                optional: true
+            );
             builder.Configuration.AddEnvironmentVariables();
 
             // Add services to the container.
@@ -30,52 +33,58 @@ namespace TAG
 
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen(c => {
-                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
-                {
-                    Name = "Authorization",
-                    In = ParameterLocation.Header,
-                    Type = SecuritySchemeType.Http,
-                    Scheme = "Bearer"
-                });
-                c.AddSecurityRequirement(new OpenApiSecurityRequirement()
-                {
+            builder.Services.AddSwaggerGen(c =>
+            {
+                c.AddSecurityDefinition(
+                    "Bearer",
+                    new OpenApiSecurityScheme()
                     {
-                        new OpenApiSecurityScheme{
-                            Reference = new OpenApiReference{
-                                Id = "Bearer",
-                                Type = ReferenceType.SecurityScheme
-                            }
-                        },new List<string>()
+                        Name = "Authorization",
+                        In = ParameterLocation.Header,
+                        Type = SecuritySchemeType.Http,
+                        Scheme = "Bearer"
                     }
-                });
+                );
+                c.AddSecurityRequirement(
+                    new OpenApiSecurityRequirement()
+                    {
+                        {
+                            new OpenApiSecurityScheme
+                            {
+                                Reference = new OpenApiReference { Id = "Bearer", Type = ReferenceType.SecurityScheme }
+                            },
+                            new List<string>()
+                        }
+                    }
+                );
             });
 
             builder.Services.AddFluentValidationAutoValidation().AddFluentValidationClientsideAdapters();
 
             var googleClientId = builder.Configuration["Google:ClientId"];
 
-            builder.Services.AddAuthentication(x =>
-            {
-                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-                x.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-            })
-            .AddJwtBearer(x =>
-            {
-                x.Authority = "https://accounts.google.com";
-                x.Audience = googleClientId;
-
-                x.TokenValidationParameters = new TokenValidationParameters
+            builder.Services
+                .AddAuthentication(x =>
                 {
-                    ValidateIssuer = true,
-                    ValidIssuer = "https://accounts.google.com",
-                    ValidateAudience = true,
-                    ValidAudience = googleClientId,
-                    ValidateLifetime = true,
-                    ValidateIssuerSigningKey = true,
-                };
-            });
+                    x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                    x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                    x.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+                })
+                .AddJwtBearer(x =>
+                {
+                    x.Authority = "https://accounts.google.com";
+                    x.Audience = googleClientId;
+
+                    x.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuer = true,
+                        ValidIssuer = "https://accounts.google.com",
+                        ValidateAudience = true,
+                        ValidAudience = googleClientId,
+                        ValidateLifetime = true,
+                        ValidateIssuerSigningKey = true,
+                    };
+                });
 
             builder.Services.AddAuthorization(options =>
             {
@@ -96,7 +105,6 @@ namespace TAG
             app.UseHttpsRedirection();
 
             app.UseAuthorization();
-
 
             app.MapControllers();
 

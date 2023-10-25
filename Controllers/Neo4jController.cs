@@ -22,9 +22,7 @@ namespace TAG.Controllers
         [HttpGet("Players")]
         public async Task<ActionResult<IEnumerable<Player>>> GetPlayers()
         {
-            var players = await _graphClient.Cypher
-                .Match("(n:PLAYER)")
-                .Return(n => n.As<Player>()).ResultsAsync;
+            var players = await _graphClient.Cypher.Match("(n:PLAYER)").Return(n => n.As<Player>()).ResultsAsync;
 
             return Ok(players);
         }
