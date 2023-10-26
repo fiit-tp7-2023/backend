@@ -1,3 +1,4 @@
+using System.Reflection;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -57,6 +58,9 @@ namespace TAG
                         Scheme = "Bearer"
                     }
                 );
+                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                c.IncludeXmlComments(xmlPath);
                 c.AddSecurityRequirement(
                     new OpenApiSecurityRequirement()
                     {
