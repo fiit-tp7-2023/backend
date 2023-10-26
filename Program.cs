@@ -1,3 +1,4 @@
+using FluentValidation;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -70,7 +71,10 @@ namespace TAG
                 );
             });
 
-            builder.Services.AddFluentValidationAutoValidation().AddFluentValidationClientsideAdapters();
+            // Fluent validation
+            builder.Services.AddValidatorsFromAssemblyContaining<Program>();
+            builder.Services.AddFluentValidationAutoValidation();
+            builder.Services.AddFluentValidationClientsideAdapters();
 
             var googleClientId = builder.Configuration["Google:ClientId"];
 
