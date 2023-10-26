@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Neo4jClient;
+using TAG.Services;
+using TAG.Services.Interfaces;
 
 namespace TAG
 {
@@ -20,7 +22,16 @@ namespace TAG
             );
             builder.Configuration.AddEnvironmentVariables();
 
+            // Services configuration
+            builder.Services.AddRouting(options =>
+            {
+                options.LowercaseUrls = true;
+                options.LowercaseQueryStrings = true;
+            });
+
             // Add services to the container.
+            builder.Services.AddScoped<ITransactionService, TransactionService>();
+
             builder.Services.AddControllers();
 
             // Neo4j
