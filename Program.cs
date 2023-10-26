@@ -1,9 +1,13 @@
+using System.Reflection;
+using FluentValidation;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Neo4jClient;
+using TAG.Services;
+using TAG.Services.Interfaces;
 
 namespace TAG
 {
@@ -20,7 +24,16 @@ namespace TAG
             );
             builder.Configuration.AddEnvironmentVariables();
 
+            // Services configuration
+            builder.Services.AddRouting(options =>
+            {
+                options.LowercaseUrls = true;
+                options.LowercaseQueryStrings = true;
+            });
+
             // Add services to the container.
+            builder.Services.AddScoped<ITransactionService, TransactionService>();
+
             builder.Services.AddControllers();
 
             // Neo4j
@@ -45,6 +58,9 @@ namespace TAG
                         Scheme = "Bearer"
                     }
                 );
+                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                c.IncludeXmlComments(xmlPath);
                 c.AddSecurityRequirement(
                     new OpenApiSecurityRequirement()
                     {
@@ -59,7 +75,10 @@ namespace TAG
                 );
             });
 
-            builder.Services.AddFluentValidationAutoValidation().AddFluentValidationClientsideAdapters();
+            // Fluent validation
+            builder.Services.AddValidatorsFromAssemblyContaining<Program>();
+            builder.Services.AddFluentValidationAutoValidation();
+            builder.Services.AddFluentValidationClientsideAdapters();
 
             var googleClientId = builder.Configuration["Google:ClientId"];
 
