@@ -5,7 +5,7 @@ using TAG.Services.Interfaces;
 
 namespace TAG.Controllers
 {
-    // [Authorize]
+    [Authorize]
     [ApiController]
     [Route("[controller]")]
     public class TransactionController : ControllerBase
