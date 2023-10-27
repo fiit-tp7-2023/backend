@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using TAG.Models;
+using TAG.DTOS;
 using TAG.Services.Interfaces;
 
 namespace TAG.Controllers
@@ -18,7 +18,7 @@ namespace TAG.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<TransactionModel?>> GetTransaction(string id)
+        public async Task<ActionResult<TransactionDTO?>> GetTransaction(string id)
         {
             var result = await _transactionService.GetTransactionAsync(id);
 
@@ -26,8 +26,8 @@ namespace TAG.Controllers
         }
 
         [HttpGet("search")]
-        public async Task<ActionResult<IEnumerable<TransactionModel>>> SearchTransactions(
-            [FromQuery] TransactionSearchRequest request
+        public async Task<ActionResult<IEnumerable<TransactionDTO>>> SearchTransactions(
+            [FromQuery] TransactionSearchRequestDTO request
         )
         {
             var result = await _transactionService.SearchTransactionsAsync(request);

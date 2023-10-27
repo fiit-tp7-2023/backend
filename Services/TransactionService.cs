@@ -1,8 +1,8 @@
 using Neo4jClient;
-using TAG.Entities;
+using TAG.Nodes;
 using TAG.Extensions;
 using TAG.Constants;
-using TAG.Models;
+using TAG.DTOS;
 using TAG.Services.Interfaces;
 
 namespace TAG.Services
@@ -16,23 +16,23 @@ namespace TAG.Services
             _graphClient = graphClient;
         }
 
-        public async Task<TransactionModel?> GetTransactionAsync(string id)
+        public async Task<TransactionDTO?> GetTransactionAsync(string id)
         {
             var result = await _graphClient.Cypher
                 .Match(
-                    $"(sender:{EntityNames.ADDRESS})-[:{RelationshipNames.SENT}]->(transaction:{EntityNames.TRANSACTION})<-[:{RelationshipNames.RECEIVED}]-(receiver:{EntityNames.ADDRESS})",
-                    $"(transaction)-[:{RelationshipNames.HAS_NFT}]->(nft:{EntityNames.NFT})"
+                    $"(sender:{NodeNames.ADDRESS})-[:{RelationshipNames.SENT}]->(transaction:{NodeNames.TRANSACTION})<-[:{RelationshipNames.RECEIVED}]-(receiver:{NodeNames.ADDRESS})",
+                    $"(transaction)-[:{RelationshipNames.HAS_NFT}]->(nft:{NodeNames.NFT})"
                 )
-                .Where<Transaction>((transaction) => transaction.Id == id)
+                .Where<TransactionNode>((transaction) => transaction.Id == id)
                 .Return(
                     (sender, transaction, receiver, nft) =>
-                        new TransactionModel
+                        new TransactionDTO
                         {
-                            Id = transaction.As<Transaction>().Id,
-                            Amount = transaction.As<Transaction>().Amount,
-                            Sender = sender.As<Address>(),
-                            Receiver = receiver.As<Address>(),
-                            NFT = nft.As<NFT>()
+                            Id = transaction.As<TransactionNode>().Id,
+                            Amount = transaction.As<TransactionNode>().Amount,
+                            Sender = sender.As<AddressNode>(),
+                            Receiver = receiver.As<AddressNode>(),
+                            NFT = nft.As<NFTNode>()
                         }
                 )
                 .FirstOrDefaultAsync();
@@ -40,25 +40,25 @@ namespace TAG.Services
             return result;
         }
 
-        public async Task<IEnumerable<TransactionModel>> SearchTransactionsAsync(TransactionSearchRequest request)
+        public async Task<IEnumerable<TransactionDTO>> SearchTransactionsAsync(TransactionSearchRequestDTO request)
         {
             var result = await _graphClient.Cypher
                 .Match(
-                    $"(sender:{EntityNames.ADDRESS})-[:{RelationshipNames.SENT}]->(transaction:{EntityNames.TRANSACTION})<-[:{RelationshipNames.RECEIVED}]-(receiver:{EntityNames.ADDRESS})",
-                    $"(transaction)-[:{RelationshipNames.HAS_NFT}]->(nft:{EntityNames.NFT})"
+                    $"(sender:{NodeNames.ADDRESS})-[:{RelationshipNames.SENT}]->(transaction:{NodeNames.TRANSACTION})<-[:{RelationshipNames.RECEIVED}]-(receiver:{NodeNames.ADDRESS})",
+                    $"(transaction)-[:{RelationshipNames.HAS_NFT}]->(nft:{NodeNames.NFT})"
                 )
-                .WhereIf<Address>(request.SenderId != null, (sender) => sender.Id == request.SenderId)
-                .WhereIf<Address>(request.ReceiverId != null, (receiver) => receiver.Id == request.ReceiverId)
-                .WhereIf<NFT>(request.NFTId != null, (nft) => nft.Id == request.NFTId)
+                .WhereIf<AddressNode>(request.SenderId != null, (sender) => sender.Id == request.SenderId)
+                .WhereIf<AddressNode>(request.ReceiverId != null, (receiver) => receiver.Id == request.ReceiverId)
+                .WhereIf<NFTNode>(request.NFTId != null, (nft) => nft.Id == request.NFTId)
                 .Return(
                     (sender, transaction, receiver, nft) =>
-                        new TransactionModel
+                        new TransactionDTO
                         {
-                            Id = transaction.As<Transaction>().Id,
-                            Amount = transaction.As<Transaction>().Amount,
-                            Sender = sender.As<Address>(),
-                            Receiver = receiver.As<Address>(),
-                            NFT = nft.As<NFT>()
+                            Id = transaction.As<TransactionNode>().Id,
+                            Amount = transaction.As<TransactionNode>().Amount,
+                            Sender = sender.As<AddressNode>(),
+                            Receiver = receiver.As<AddressNode>(),
+                            NFT = nft.As<NFTNode>()
                         }
                 )
                 .OrderByNodeId("sender")

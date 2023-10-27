@@ -1,8 +1,8 @@
 using Newtonsoft.Json;
 
-namespace TAG.Entities
+namespace TAG.Nodes
 {
-    public class Transaction
+    public class TransactionNode
     {
         [JsonProperty("id")]
         public string Id { get; set; } = null!;

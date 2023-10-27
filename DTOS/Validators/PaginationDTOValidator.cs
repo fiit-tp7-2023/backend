@@ -1,13 +1,13 @@
 using FluentValidation;
-using TAG.Models;
+using TAG.DTOS;
 using TAG.Constants;
 
-namespace Tag.Models.Validators
+namespace Tag.DTOS.Validators
 {
-    public class PaginationValidator<T> : AbstractValidator<T>
-        where T : Pagination
+    public class PaginationDTOValidator<T> : AbstractValidator<T>
+        where T : PaginationDTO
     {
-        public PaginationValidator()
+        public PaginationDTOValidator()
         {
             RuleFor(x => x.PageNumber).GreaterThanOrEqualTo(PaginationSettings.MIN_PAGE_NUMBER);
 
