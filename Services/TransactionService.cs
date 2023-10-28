@@ -40,16 +40,19 @@ namespace TAG.Services
             return result;
         }
 
-        public async Task<IEnumerable<TransactionDTO>> SearchTransactionsAsync(TransactionSearchRequestDTO request)
+        public async Task<TransactionSearchResponseDTO> SearchTransactionsAsync(TransactionSearchRequestDTO request)
         {
-            var result = await _graphClient.Cypher
+            var query = _graphClient.Cypher
                 .Match(
                     $"(sender:{NodeNames.ADDRESS})-[:{RelationshipNames.SENT}]->(transaction:{NodeNames.TRANSACTION})<-[:{RelationshipNames.RECEIVED}]-(receiver:{NodeNames.ADDRESS})",
                     $"(transaction)-[:{RelationshipNames.HAS_NFT}]->(nft:{NodeNames.NFT})"
                 )
                 .WhereIf<AddressNode>(request.SenderId != null, (sender) => sender.Id == request.SenderId)
                 .WhereIf<AddressNode>(request.ReceiverId != null, (receiver) => receiver.Id == request.ReceiverId)
-                .WhereIf<NFTNode>(request.NFTId != null, (nft) => nft.Id == request.NFTId)
+                .WhereIf<NFTNode>(request.NFTId != null, (nft) => nft.Id == request.NFTId);
+
+            var count = await query.Return(transaction => transaction.Count()).FirstOrDefaultAsync();
+            var transactions = await query
                 .Return(
                     (sender, transaction, receiver, nft) =>
                         new TransactionDTO
@@ -64,6 +67,12 @@ namespace TAG.Services
                 .OrderByNodeId("sender")
                 .Paginate(request.PageNumber, request.PageSize)
                 .ResultsAsync;
+
+            var result = new TransactionSearchResponseDTO
+            {
+                PageCount = (int)Math.Ceiling((double)count / request.PageSize),
+                Transactions = transactions
+            };
 
             return result;
         }

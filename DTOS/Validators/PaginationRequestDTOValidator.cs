@@ -4,10 +4,10 @@ using TAG.Constants;
 
 namespace Tag.DTOS.Validators
 {
-    public class PaginationDTOValidator<T> : AbstractValidator<T>
-        where T : PaginationDTO
+    public class PaginationRequestDTOValidator<T> : AbstractValidator<T>
+        where T : PaginationRequestDTO
     {
-        public PaginationDTOValidator()
+        public PaginationRequestDTOValidator()
         {
             RuleFor(x => x.PageNumber).GreaterThanOrEqualTo(PaginationSettings.MIN_PAGE_NUMBER);
 

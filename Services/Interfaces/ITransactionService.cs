@@ -5,6 +5,6 @@ namespace TAG.Services.Interfaces
     public interface ITransactionService
     {
         Task<TransactionDTO?> GetTransactionAsync(string id);
-        Task<IEnumerable<TransactionDTO>> SearchTransactionsAsync(TransactionSearchRequestDTO request);
+        Task<TransactionSearchResponseDTO> SearchTransactionsAsync(TransactionSearchRequestDTO request);
     }
 }

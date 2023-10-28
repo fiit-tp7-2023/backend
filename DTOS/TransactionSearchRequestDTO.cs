@@ -1,6 +1,6 @@
 namespace TAG.DTOS
 {
-    public class TransactionSearchRequestDTO : PaginationDTO
+    public class TransactionSearchRequestDTO : PaginationRequestDTO
     {
         public string? SenderId { get; set; }
         public string? ReceiverId { get; set; }
