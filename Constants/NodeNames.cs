@@ -1,6 +1,6 @@
 namespace TAG.Constants
 {
-    public static class EntityNames
+    public static class NodeNames
     {
         public const string ADDRESS = "Address";
         public const string NFT = "NFT";

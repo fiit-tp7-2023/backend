@@ -1,8 +1,8 @@
 using Newtonsoft.Json;
 
-namespace TAG.Entities
+namespace TAG.Nodes
 {
-    public class NFT
+    public class NFTNode
     {
         [JsonProperty("id")]
         public string Id { get; set; } = null!;
