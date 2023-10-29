@@ -1,6 +1,6 @@
 namespace TAG.DTOS
 {
-    public class PaginationResponseDTO
+    public abstract class PaginationResponseDTO
     {
         public int PageCount { get; set; }
     }
