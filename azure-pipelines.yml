@@ -1,8 +1,25 @@
 # ASP.NET Core (.NET Framework)
+# Build and test ASP.NET Core projects targeting the full .NET Framework.
+# Add steps that publish symbols, save build artifacts, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/languages/dotnet-core
+
+trigger:
+- main
+
+pool:
+  vmImage: 'windows-latest'
+
+variables:
+  solution: '**/*.sln'
+  buildPlatform: 'Any CPU'
+  buildConfiguration: 'Release'
+
+steps:
 - task: AzureAppServiceSettings@1
   inputs:
     azureSubscription: 'Azure for Students Starter(982b2a6a-2d15-4a59-950d-65b0a39ea32f)'
-    appName: 'TAG - backend'
+    appName: 'backend-tag'
+    resourceGroupName: 'backend-tag_group'
     appSettings: |
       {
         "Logging": {
@@ -21,22 +38,6 @@
           "Password": "c7s2v93-vxDEshfhmszARlUitQSJuYfquJ2bnM6AFLk"
         }
       }
-# Build and test ASP.NET Core projects targeting the full .NET Framework.
-# Add steps that publish symbols, save build artifacts, and more:
-# https://docs.microsoft.com/azure/devops/pipelines/languages/dotnet-core
-
-trigger:
-- main
-
-pool:
-  vmImage: 'windows-latest'
-
-variables:
-  solution: '**/*.sln'
-  buildPlatform: 'Any CPU'
-  buildConfiguration: 'Release'
-
-steps:
 - task: NuGetToolInstaller@1
 
 - task: NuGetCommand@2
