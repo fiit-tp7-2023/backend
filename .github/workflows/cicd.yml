@@ -6,7 +6,7 @@ name: Build and deploy ASP.Net Core app to Azure Web App - backend-tag
 on:
   push:
     branches:
-      - AB#93-azure-pipelines
+      - main
   workflow_dispatch:
 
 jobs:
