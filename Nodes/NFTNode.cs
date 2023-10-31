@@ -1,3 +1,4 @@
+using SYSTEM_JSON = System.Text.Json.Serialization;
 using Newtonsoft.Json;
 
 namespace TAG.Nodes
@@ -15,5 +16,22 @@ namespace TAG.Nodes
 
         [JsonProperty("description")]
         public string? Description { get; set; }
+
+        [SYSTEM_JSON.JsonIgnore]
+        [JsonProperty("attributes")]
+        public string? AttributesString { get; set; }
+
+        public IEnumerable<Attribute> Attributes
+        {
+            get
+            {
+                if (AttributesString == null)
+                {
+                    return new List<Attribute>();
+                }
+
+                return JsonConvert.DeserializeObject<List<Attribute>>(AttributesString) ?? new List<Attribute>();
+            }
+        }
     }
 }
