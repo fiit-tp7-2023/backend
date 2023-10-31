@@ -34,7 +34,7 @@ namespace TAG
             // Add services to the container.
             builder.Services.AddScoped<ITransactionService, TransactionService>();
 
-            builder.Services.AddControllers().AddNewtonsoftJson();
+            builder.Services.AddControllers();
 
             // Neo4j
             var neo4jUri = builder.Configuration["Neo4j:Uri"];
