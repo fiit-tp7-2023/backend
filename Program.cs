@@ -33,6 +33,7 @@ namespace TAG
 
             // Add services to the container.
             builder.Services.AddScoped<ITransactionService, TransactionService>();
+            builder.Services.AddScoped<ITagService, TagService>();
 
             builder.Services.AddControllers();
 
