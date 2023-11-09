@@ -4,6 +4,7 @@ using TAG.Extensions;
 using TAG.Constants;
 using TAG.DTOS;
 using TAG.Services.Interfaces;
+using Microsoft.IdentityModel.Tokens;
 
 namespace TAG.Services
 {
@@ -19,8 +20,8 @@ namespace TAG.Services
         public async Task<TagSearchResponseDTO> SearchTagsAsync(TagSearchRequestDTO request)
         {
             var query = _graphClient.Cypher
-                .Match("(tag:Tag)")
-                .WhereIf<TagNode>(request.Name != null && request.Name != "", (tag) => tag.Type.Contains(request.Name));
+                .Match($"(tag:{NodeNames.TAG})")
+                .WhereIf<TagNode>(!request.Name.IsNullOrEmpty(), (tag) => tag.Type.Contains(request.Name));
 
             var pageCount = (int)
                 Math.Ceiling(await query.Return((tag) => tag.Count()).FirstOrDefaultAsync() / (double)request.PageSize);
