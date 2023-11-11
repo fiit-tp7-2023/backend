@@ -36,6 +36,15 @@ namespace TAG.Extensions
             return OrderByNodeIdInternal(queryable, properties, true);
         }
 
+        public static ICypherFluentQuery OptionalMatchIf(
+            this ICypherFluentQuery queryable,
+            bool condition,
+            string pattern
+        )
+        {
+            return condition ? queryable.OptionalMatch(pattern) : queryable.Match(pattern);
+        }
+
         private static ICypherFluentQuery<T> OrderByNodeIdInternal<T>(
             ICypherFluentQuery<T> queryable,
             string[] properties,

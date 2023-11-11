@@ -5,5 +5,6 @@ namespace TAG.DTOS
         public string? SenderId { get; set; }
         public string? ReceiverId { get; set; }
         public string? NFTId { get; set; }
+        public IEnumerable<string>? TagNames { get; set; }
     }
 }

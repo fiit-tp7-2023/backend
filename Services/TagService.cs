@@ -21,7 +21,7 @@ namespace TAG.Services
         {
             var query = _graphClient.Cypher
                 .Match($"(tag:{NodeNames.TAG})")
-                .WhereIf<TagNode>(!request.Name.IsNullOrEmpty(), (tag) => tag.Type.Contains(request.Name));
+                .WhereIf<TagNode>(!request.Name.IsNullOrEmpty(), (tag) => tag.Type.Contains(request.Name!));
 
             var pageCount = (int)
                 Math.Ceiling(await query.Return((tag) => tag.Count()).FirstOrDefaultAsync() / (double)request.PageSize);

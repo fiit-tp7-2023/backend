@@ -2,7 +2,7 @@ using TAG.Nodes;
 
 namespace TAG.DTOS
 {
-    public class TagSearchResponseDTO : PaginationResponseDTO
+    public class NFTDTO : NFTNode
     {
         public IEnumerable<string> Tags { get; set; } = null!;
     }
