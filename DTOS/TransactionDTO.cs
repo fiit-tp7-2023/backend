@@ -6,6 +6,6 @@ namespace TAG.DTOS
     {
         public AddressNode Sender { get; set; } = null!;
         public AddressNode Receiver { get; set; } = null!;
-        public NFTNode NFT { get; set; } = null!;
+        public NFTDTO NFT { get; set; } = null!;
     }
 }

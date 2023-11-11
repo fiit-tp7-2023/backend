@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Neo4jClient;
+using TAG.DTOS.Mappings;
 using TAG.Services;
 using TAG.Services.Interfaces;
 
@@ -32,6 +33,8 @@ namespace TAG
             });
 
             // Add services to the container.
+            builder.Services.AddAutoMapper(typeof(TransactionProfile));
+
             builder.Services.AddScoped<ITransactionService, TransactionService>();
             builder.Services.AddScoped<ITagService, TagService>();
 
