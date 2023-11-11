@@ -25,7 +25,7 @@ namespace TAG.Controllers
             return Ok(result);
         }
 
-        [HttpGet("search")]
+        [HttpGet]
         public async Task<ActionResult<TransactionSearchResponseDTO>> SearchTransactions(
             [FromQuery] TransactionSearchRequestDTO request
         )
