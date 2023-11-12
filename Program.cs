@@ -34,9 +34,11 @@ namespace TAG
 
             // Add services to the container.
             builder.Services.AddAutoMapper(typeof(TransactionProfile));
+            builder.Services.AddAutoMapper(typeof(NFTProfile));
 
             builder.Services.AddScoped<ITransactionService, TransactionService>();
             builder.Services.AddScoped<ITagService, TagService>();
+            builder.Services.AddScoped<INFTService, NFTService>();
 
             builder.Services.AddControllers();
 
