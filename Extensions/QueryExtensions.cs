@@ -45,6 +45,11 @@ namespace TAG.Extensions
             return condition ? queryable.OptionalMatch(pattern) : queryable.Match(pattern);
         }
 
+        public static ICypherFluentQuery WhereAlwaysTrue(this ICypherFluentQuery queryable)
+        {
+            return queryable.Where("true");
+        }
+
         private static ICypherFluentQuery<T> OrderByNodeIdInternal<T>(
             ICypherFluentQuery<T> queryable,
             string[] properties,

@@ -58,13 +58,14 @@ namespace TAG.Services
                     request.TagNames.IsNullOrEmpty(),
                     $"(nft)-[:{RelationshipNames.TAGGED}]->(tag:{NodeNames.TAG})"
                 )
-                .WhereIf<AddressNode>(!request.SenderId.IsNullOrEmpty(), (sender) => sender.Id == request.SenderId)
-                .WhereIf<AddressNode>(
+                .WhereAlwaysTrue()
+                .AndWhereIf<AddressNode>(!request.SenderId.IsNullOrEmpty(), (sender) => sender.Id == request.SenderId)
+                .AndWhereIf<AddressNode>(
                     !request.ReceiverId.IsNullOrEmpty(),
                     (receiver) => receiver.Id == request.ReceiverId
                 )
-                .WhereIf<NFTNode>(!request.NFTId.IsNullOrEmpty(), (nft) => nft.Id == request.NFTId)
-                .WhereIf<TagNode>(!request.TagNames.IsNullOrEmpty(), (tag) => tag.Type.In(request.TagNames));
+                .AndWhereIf<NFTNode>(!request.NFTId.IsNullOrEmpty(), (nft) => nft.Id == request.NFTId)
+                .AndWhereIf<TagNode>(!request.TagNames.IsNullOrEmpty(), (tag) => tag.Type.In(request.TagNames));
 
             var count = await query.Return(transaction => transaction.Count()).FirstOrDefaultAsync();
             var queryResults = await query
