@@ -1,7 +1,7 @@
 using SYSTEM_JSON = System.Text.Json.Serialization;
 using Newtonsoft.Json;
 
-namespace TAG.Nodes
+namespace TAG.Database.Nodes
 {
     public class NFTNode
     {
@@ -32,6 +32,15 @@ namespace TAG.Nodes
 
                 return JsonConvert.DeserializeObject<List<Attribute>>(AttributesString) ?? new List<Attribute>();
             }
+        }
+
+        public class Attribute
+        {
+            [JsonProperty("trait_type")]
+            public string TraitType { get; set; } = null!;
+
+            [JsonProperty("value")]
+            public string Value { get; set; } = null!;
         }
     }
 }

@@ -1,4 +1,5 @@
-using TAG.Nodes;
+using TAG.Database.Nodes;
+using TAG.Database.Relationships;
 
 namespace TAG.QueryResults
 {
@@ -9,5 +10,6 @@ namespace TAG.QueryResults
         public AddressNode Receiver { get; set; } = null!;
         public NFTNode NFT { get; set; } = null!;
         public IEnumerable<TagNode> Tags { get; set; } = null!;
+        public IEnumerable<TaggedRelationship> TagRelations { get; set; } = null!;
     }
 }

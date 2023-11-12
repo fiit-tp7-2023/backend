@@ -1,6 +1,6 @@
 using Newtonsoft.Json;
 
-namespace TAG.Nodes
+namespace TAG.Database.Nodes
 {
     public class TagNode
     {
