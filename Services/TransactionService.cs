@@ -56,10 +56,6 @@ namespace TAG.Services
                     $"(sender:{NodeNames.ADDRESS})-[:{RelationshipNames.SENT}]->(transaction:{NodeNames.TRANSACTION})<-[:{RelationshipNames.RECEIVED}]-(receiver:{NodeNames.ADDRESS})",
                     $"(transaction)-[:{RelationshipNames.HAS_NFT}]->(nft:{NodeNames.NFT})"
                 )
-                .OptionalMatchIf(
-                    request.TagNames.IsNullOrEmpty(),
-                    $"(nft)-[rel:{RelationshipNames.TAGGED}]->(tag:{NodeNames.TAG})"
-                )
                 .WhereAlwaysTrue()
                 .AndWhereIf<AddressNode>(!request.SenderId.IsNullOrEmpty(), (sender) => sender.Id == request.SenderId)
                 .AndWhereIf<AddressNode>(
@@ -67,7 +63,11 @@ namespace TAG.Services
                     (receiver) => receiver.Id == request.ReceiverId
                 )
                 .AndWhereIf<NFTNode>(!request.NFTId.IsNullOrEmpty(), (nft) => nft.Id == request.NFTId)
-                .AndWhereIf<TagNode>(!request.TagNames.IsNullOrEmpty(), (tag) => tag.Type.In(request.TagNames));
+                .OptionalMatchIf(
+                    request.TagNames.IsNullOrEmpty(),
+                    $"(nft)-[rel:{RelationshipNames.TAGGED}]->(tag:{NodeNames.TAG})"
+                )
+                .WhereIf<TagNode>(!request.TagNames.IsNullOrEmpty(), (tag) => tag.Type.In(request.TagNames));
 
             var count = await query.Return(transaction => transaction.CountDistinct()).FirstOrDefaultAsync();
             var queryResults = await query
