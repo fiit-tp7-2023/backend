@@ -26,8 +26,8 @@ namespace TAG.Services
         {
             var queryResult = await _graphClient.Cypher
                 .Match($"(nft:{NodeNames.NFT})")
-                .OptionalMatch($"(nft)-[rel:{RelationshipNames.TAGGED}]->(tag:{NodeNames.TAG})")
                 .Where<NFTNode>((nft) => nft.Id == id)
+                .OptionalMatch($"(nft)-[rel:{RelationshipNames.TAGGED}]->(tag:{NodeNames.TAG})")
                 .ReturnDistinct(
                     (nft, rel, tag) =>
                         new NFTQueryResult
