@@ -4,8 +4,9 @@ using TAG.Constants;
 using TAG.DTOS;
 using TAG.Services.Interfaces;
 using Microsoft.IdentityModel.Tokens;
+using TAG.Database.Nodes;
 
-namespace TAG.Database.Nodes
+namespace TAG.Services
 {
     public class TagService : ITagService
     {
@@ -23,7 +24,9 @@ namespace TAG.Database.Nodes
                 .WhereIf<TagNode>(!request.Name.IsNullOrEmpty(), (tag) => tag.Type.Contains(request.Name!));
 
             var pageCount = (int)
-                Math.Ceiling(await query.Return((tag) => tag.Count()).FirstOrDefaultAsync() / (double)request.PageSize);
+                Math.Ceiling(
+                    await query.Return((tag) => tag.CountDistinct()).FirstOrDefaultAsync() / (double)request.PageSize
+                );
 
             var tags = await query
                 .ReturnDistinct((tag) => tag.As<TagNode>().Type)
