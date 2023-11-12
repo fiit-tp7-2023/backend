@@ -1,12 +1,13 @@
 using Neo4jClient;
-using TAG.Nodes;
 using TAG.Extensions;
 using TAG.Constants;
-using TAG.DTOS;
 using TAG.Services.Interfaces;
 using Microsoft.IdentityModel.Tokens;
 using TAG.QueryResults;
 using AutoMapper;
+using TAG.Database.Relationships;
+using TAG.Database.Nodes;
+using TAG.DTOS;
 
 namespace TAG.Services
 {
@@ -32,7 +33,7 @@ namespace TAG.Services
                         {
                             NFT = nft.As<NFTNode>(),
                             Tags = tag.CollectAs<TagNode>(),
-                            TagRelations = rel.CollectAs<TagRelationNode>()
+                            TagRelations = rel.CollectAs<TaggedRelationship>()
                         }
                 )
                 .FirstOrDefaultAsync();

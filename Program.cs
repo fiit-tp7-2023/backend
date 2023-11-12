@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Neo4jClient;
+using TAG.Database.Nodes;
 using TAG.DTOS.Mappings;
 using TAG.Services;
 using TAG.Services.Interfaces;

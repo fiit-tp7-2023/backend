@@ -1,12 +1,11 @@
 using Neo4jClient;
-using TAG.Nodes;
 using TAG.Extensions;
 using TAG.Constants;
 using TAG.DTOS;
 using TAG.Services.Interfaces;
 using Microsoft.IdentityModel.Tokens;
 
-namespace TAG.Services
+namespace TAG.Database.Nodes
 {
     public class TagService : ITagService
     {
