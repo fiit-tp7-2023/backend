@@ -28,11 +28,11 @@ namespace TAG.Services
                 .Match(
                     $"(sender:{NodeNames.ADDRESS})-[:{RelationshipNames.SENT}]->(transaction:{NodeNames.TRANSACTION})<-[:{RelationshipNames.RECEIVED}]-(receiver:{NodeNames.ADDRESS})",
                     $"(transaction)-[:{RelationshipNames.HAS_NFT}]->(nft:{NodeNames.NFT})",
-                    $"(nft)-[:{RelationshipNames.TAGGED}]->(tag:{NodeNames.TAG})"
+                    $"(nft)-[rel:{RelationshipNames.TAGGED}]->(tag:{NodeNames.TAG})"
                 )
                 .Where<TransactionNode>((transaction) => transaction.Id == id)
                 .Return(
-                    (sender, transaction, receiver, nft, tag) =>
+                    (sender, transaction, receiver, nft, rel, tag) =>
                         new TransactionQueryResult
                         {
                             Transaction = transaction.As<TransactionNode>(),
@@ -40,6 +40,7 @@ namespace TAG.Services
                             Receiver = receiver.As<AddressNode>(),
                             NFT = nft.As<NFTNode>(),
                             Tags = tag.CollectAs<TagNode>(),
+                            TagRelations = rel.CollectAs<TagRelationNode>()
                         }
                 )
                 .FirstOrDefaultAsync();
@@ -56,7 +57,7 @@ namespace TAG.Services
                 )
                 .OptionalMatchIf(
                     request.TagNames.IsNullOrEmpty(),
-                    $"(nft)-[:{RelationshipNames.TAGGED}]->(tag:{NodeNames.TAG})"
+                    $"(nft)-[rel:{RelationshipNames.TAGGED}]->(tag:{NodeNames.TAG})"
                 )
                 .WhereAlwaysTrue()
                 .AndWhereIf<AddressNode>(!request.SenderId.IsNullOrEmpty(), (sender) => sender.Id == request.SenderId)
@@ -70,7 +71,7 @@ namespace TAG.Services
             var count = await query.Return(transaction => transaction.Count()).FirstOrDefaultAsync();
             var queryResults = await query
                 .Return(
-                    (sender, transaction, receiver, nft, tag) =>
+                    (sender, transaction, receiver, nft, rel, tag) =>
                         new TransactionQueryResult
                         {
                             Transaction = transaction.As<TransactionNode>(),
@@ -78,6 +79,7 @@ namespace TAG.Services
                             Receiver = receiver.As<AddressNode>(),
                             NFT = nft.As<NFTNode>(),
                             Tags = tag.CollectAs<TagNode>(),
+                            TagRelations = rel.CollectAs<TagRelationNode>()
                         }
                 )
                 .OrderByNodeId("sender")

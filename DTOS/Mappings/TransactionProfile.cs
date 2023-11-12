@@ -22,7 +22,11 @@ namespace TAG.DTOS.Mappings
                                     Uri = src.NFT.Uri,
                                     Description = src.NFT.Description,
                                     AttributesString = src.NFT.AttributesString,
-                                    Tags = src.Tags.Select(tag => tag.Type)
+                                    Tags = src.Tags.Zip(
+                                        src.TagRelations,
+                                        (tagNode, tagRelationNode) =>
+                                            new TagRelationDTO { Type = tagNode.Type, Value = tagRelationNode.Value }
+                                    )
                                 }
                         )
                 );

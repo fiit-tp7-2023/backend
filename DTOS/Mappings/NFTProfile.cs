@@ -13,7 +13,18 @@ namespace TAG.DTOS.Mappings
                 .ForMember(dest => dest.Uri, opt => opt.MapFrom(src => src.NFT.Uri))
                 .ForMember(dest => dest.Description, opt => opt.MapFrom(src => src.NFT.Description))
                 .ForMember(dest => dest.AttributesString, opt => opt.MapFrom(src => src.NFT.AttributesString))
-                .ForMember(dest => dest.Tags, opt => opt.MapFrom(src => src.Tags.Select(tag => tag.Type)));
+                .ForMember(
+                    dest => dest.Tags,
+                    opt =>
+                        opt.MapFrom(
+                            src =>
+                                src.Tags.Zip(
+                                    src.TagRelations,
+                                    (tagNode, tagRelationNode) =>
+                                        new TagRelationDTO { Type = tagNode.Type, Value = tagRelationNode.Value }
+                                )
+                        )
+                );
         }
     }
 }

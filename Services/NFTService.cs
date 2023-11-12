@@ -24,9 +24,17 @@ namespace TAG.Services
         public async Task<NFTDTO> GetNFTAsync(string id)
         {
             var queryResult = await _graphClient.Cypher
-                .Match($"(nft:{NodeNames.NFT})-[:{RelationshipNames.TAGGED}]->(tag:{NodeNames.TAG})")
+                .Match($"(nft:{NodeNames.NFT})-[rel:{RelationshipNames.TAGGED}]->(tag:{NodeNames.TAG})")
                 .Where<NFTNode>((nft) => nft.Id == id)
-                .Return((nft, tag) => new NFTQueryResult { NFT = nft.As<NFTNode>(), Tags = tag.CollectAs<TagNode>(), })
+                .Return(
+                    (nft, rel, tag) =>
+                        new NFTQueryResult
+                        {
+                            NFT = nft.As<NFTNode>(),
+                            Tags = tag.CollectAs<TagNode>(),
+                            TagRelations = rel.CollectAs<TagRelationNode>()
+                        }
+                )
                 .FirstOrDefaultAsync();
 
             return _mapper.Map<NFTDTO>(queryResult);

@@ -4,6 +4,6 @@ namespace TAG.DTOS
 {
     public class NFTDTO : NFTNode
     {
-        public IEnumerable<string> Tags { get; set; } = null!;
+        public IEnumerable<TagRelationDTO> Tags { get; set; } = null!;
     }
 }

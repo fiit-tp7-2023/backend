@@ -6,5 +6,6 @@ namespace TAG.QueryResults
     {
         public NFTNode NFT { get; set; } = null!;
         public IEnumerable<TagNode> Tags { get; set; } = null!;
+        public IEnumerable<TagRelationNode> TagRelations { get; set; } = null!;
     }
 }
