@@ -1,8 +1,10 @@
 using System.Reflection;
+using System.Security.Cryptography.X509Certificates;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Neo4jClient;
@@ -26,6 +28,16 @@ namespace TAG
             builder.Configuration.AddEnvironmentVariables();
 
             // Services configuration
+            if (builder.Environment.IsProduction())
+            {
+                builder.Services
+                    .AddDataProtection()
+                    .PersistKeysToFileSystem(new DirectoryInfo(builder.Configuration["DataProtection:StoragePath"]!))
+                    .ProtectKeysWithCertificate(
+                        new X509Certificate2(Convert.FromBase64String(builder.Configuration["DataProtection:Key"]!))
+                    );
+            }
+
             builder.Services.AddRouting(options =>
             {
                 options.LowercaseUrls = true;
