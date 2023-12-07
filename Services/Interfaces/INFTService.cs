@@ -4,6 +4,6 @@ namespace TAG.Services.Interfaces
 {
     public interface INFTService
     {
-        Task<NFTDTO> GetNFTAsync(string id);
+        Task<NFTDTO> GetNFTAsync(string address);
     }
 }
