@@ -4,7 +4,7 @@ namespace TAG.DTOS
     {
         public string? SenderAddress { get; set; }
         public string? ReceiverAddress { get; set; }
-        public string? NFTId { get; set; }
+        public string? NFTAddress { get; set; }
         public IEnumerable<string>? TagNames { get; set; }
     }
 }

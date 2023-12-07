@@ -65,7 +65,7 @@ namespace TAG.Services
                     !request.ReceiverAddress.IsNullOrEmpty(),
                     (receiver) => receiver.Address == request.ReceiverAddress
                 )
-                .AndWhereIf<NFTNode>(!request.NFTId.IsNullOrEmpty(), (nft) => nft.Address == request.NFTId)
+                .AndWhereIf<NFTNode>(!request.NFTAddress.IsNullOrEmpty(), (nft) => nft.Address == request.NFTAddress)
                 .OptionalMatchIf(
                     request.TagNames.IsNullOrEmpty(),
                     $"(nft)-[rel:{RelationshipNames.TAGGED}]->(tag:{NodeNames.TAG})"
