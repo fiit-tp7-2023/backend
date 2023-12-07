@@ -57,12 +57,15 @@ namespace TAG.Services
                     $"(transaction)-[:{RelationshipNames.HAS_NFT}]->(nft:{NodeNames.NFT})"
                 )
                 .WhereAlwaysTrue()
-                .AndWhereIf<AddressNode>(!request.SenderId.IsNullOrEmpty(), (sender) => sender.Id == request.SenderId)
                 .AndWhereIf<AddressNode>(
-                    !request.ReceiverId.IsNullOrEmpty(),
-                    (receiver) => receiver.Id == request.ReceiverId
+                    !request.SenderAddress.IsNullOrEmpty(),
+                    (sender) => sender.Address == request.SenderAddress
                 )
-                .AndWhereIf<NFTNode>(!request.NFTId.IsNullOrEmpty(), (nft) => nft.Id == request.NFTId)
+                .AndWhereIf<AddressNode>(
+                    !request.ReceiverAddress.IsNullOrEmpty(),
+                    (receiver) => receiver.Address == request.ReceiverAddress
+                )
+                .AndWhereIf<NFTNode>(!request.NFTAddress.IsNullOrEmpty(), (nft) => nft.Address == request.NFTAddress)
                 .OptionalMatchIf(
                     request.TagNames.IsNullOrEmpty(),
                     $"(nft)-[rel:{RelationshipNames.TAGGED}]->(tag:{NodeNames.TAG})"

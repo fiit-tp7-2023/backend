@@ -22,11 +22,11 @@ namespace TAG.Services
             _mapper = mapper;
         }
 
-        public async Task<NFTDTO> GetNFTAsync(string id)
+        public async Task<NFTDTO> GetNFTAsync(string address)
         {
             var queryResult = await _graphClient.Cypher
                 .Match($"(nft:{NodeNames.NFT})")
-                .Where<NFTNode>((nft) => nft.Id == id)
+                .Where<NFTNode>((nft) => nft.Address == address)
                 .OptionalMatch($"(nft)-[rel:{RelationshipNames.TAGGED}]->(tag:{NodeNames.TAG})")
                 .ReturnDistinct(
                     (nft, rel, tag) =>

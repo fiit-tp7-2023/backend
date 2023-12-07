@@ -5,14 +5,32 @@ namespace TAG.Database.Nodes
 {
     public class NFTNode
     {
-        [JsonProperty("id")]
-        public string Id { get; set; } = null!;
+        [JsonProperty("address")]
+        public string Address { get; set; } = null!;
+
+        [JsonProperty("createdAtBlock")]
+        public ulong CreatedAtBlock { get; set; }
+
+        [JsonProperty("tokenId")]
+        public ulong TokenId { get; set; }
 
         [JsonProperty("name")]
         public string? Name { get; set; }
 
         [JsonProperty("uri")]
         public string? Uri { get; set; }
+
+        [JsonProperty("raw")]
+        public string? Raw { get; set; }
+
+        [JsonProperty("image")]
+        public string? Image { get; set; }
+
+        [JsonProperty("externalUrl")]
+        public string? ExternalUrl { get; set; }
+
+        [JsonProperty("animationUrl")]
+        public string? AnimationUrl { get; set; }
 
         [JsonProperty("description")]
         public string? Description { get; set; }

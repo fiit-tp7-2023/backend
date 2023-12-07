@@ -8,7 +8,7 @@ namespace TAG.DTOS.Mappings
         public NFTProfile()
         {
             CreateMap<NFTQueryResult, NFTDTO>()
-                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.NFT.Id))
+                .ForMember(dest => dest.Address, opt => opt.MapFrom(src => src.NFT.Address))
                 .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.NFT.Name))
                 .ForMember(dest => dest.Uri, opt => opt.MapFrom(src => src.NFT.Uri))
                 .ForMember(dest => dest.Description, opt => opt.MapFrom(src => src.NFT.Description))

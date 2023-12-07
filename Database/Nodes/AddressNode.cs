@@ -4,7 +4,10 @@ namespace TAG.Database.Nodes
 {
     public class AddressNode
     {
-        [JsonProperty("id")]
-        public string Id { get; set; } = null!;
+        [JsonProperty("address")]
+        public string Address { get; set; } = null!;
+
+        [JsonProperty("createdAtBlock")]
+        public ulong CreatedAtBlock { get; set; }
     }
 }

@@ -17,7 +17,12 @@ namespace TAG.DTOS.Mappings
                             src =>
                                 new NFTDTO
                                 {
-                                    Id = src.NFT.Id,
+                                    Address = src.NFT.Address,
+                                    AnimationUrl = src.NFT.AnimationUrl,
+                                    CreatedAtBlock = src.NFT.CreatedAtBlock,
+                                    ExternalUrl = src.NFT.ExternalUrl,
+                                    Image = src.NFT.Image,
+                                    TokenId = src.NFT.TokenId,
                                     Name = src.NFT.Name,
                                     Uri = src.NFT.Uri,
                                     Description = src.NFT.Description,
