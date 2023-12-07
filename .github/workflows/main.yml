@@ -7,21 +7,18 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Install SSH keys
-        run: |
-          install -m 600 -D /dev/null ~/.ssh/id_rsa
-          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
-          ssh-keyscan -H ${{ secrets.SSH_HOST }} > ~/.ssh/known_hosts
-
       - name: SSH into the server, Github pull and update Docker setup
-        run: ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "cd /usr/local/team07/presentation-web/backend && \
-          git checkout main && \
-          git pull && \
-          docker compose down --rmi all && \
-          docker compose up --build -d && \
-          exit"
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script_stop: true
+          script: |
+            cd /usr/local/team07/presentation-web/backend
+            git checkout main
+            git pull
+            docker compose down --rmi all
+            docker compose up --build -d
 
-      - name: Cleanup
-        run: rm -rf ~/.ssh
