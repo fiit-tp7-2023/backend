@@ -1,0 +1,22 @@
+version: '1.0'
+
+networks:
+  team07:
+    external: true
+
+services:
+  presentation-web-backend:
+    build: .
+    container_name: presentation-web-backend
+    image: presentation-web-backend
+    restart: unless-stopped
+    ports:
+      - 5000:5000
+    networks:
+      - team07
+    volumes:
+      - presentation-web-backend_keys:/etc/team07/presentation-web/backend/data-protection-keys
+
+volumes:
+  presentation-web-backend_keys:
+    name: presentation-web-backend_keys
