@@ -28,7 +28,7 @@ namespace TAG
             builder.Configuration.AddEnvironmentVariables();
 
             // Services configuration
-            if (builder.Environment.IsProduction())
+            if (builder.Environment.IsProduction() && builder.Configuration["DeploymentEnv"] != "AZURE")
             {
                 builder.Services
                     .AddDataProtection()
