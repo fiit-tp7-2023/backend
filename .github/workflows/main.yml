@@ -20,5 +20,6 @@ jobs:
             git checkout main
             git pull
             docker compose down --rmi all
-            docker compose up --build -d
+            docker compose build --no-cache
+            docker compose up -d
 
