@@ -15,12 +15,4 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script_stop: true
-          script: |
-            cd /usr/local/team07/presentation-web/backend
-            git checkout main
-            git pull
-            docker compose down --rmi all
-            docker system prune -a -f
-            docker compose build --no-cache
-            docker compose up -d
-
+          script: /mnt/disk/deploy-scripts/presentation-web-backend.sh
