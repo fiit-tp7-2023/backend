@@ -14,6 +14,7 @@ services:
       - team07
     volumes:
       - presentation-web-backend_keys:/etc/team07/presentation-web/backend/data-protection-keys
+      - ./appsettings.json:/app/appsettings.json:ro
 
 volumes:
   presentation-web-backend_keys:
