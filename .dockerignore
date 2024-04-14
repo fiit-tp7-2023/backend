@@ -1,0 +1,8 @@
+.*
+appsettings*.json
+*.yml
+
+bin
+obj
+README.md
+Dockerfile

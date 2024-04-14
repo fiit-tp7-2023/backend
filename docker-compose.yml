@@ -1,5 +1,3 @@
-version: '1.0'
-
 networks:
   team07:
     external: true
@@ -11,11 +9,12 @@ services:
     image: presentation-web-backend
     restart: unless-stopped
     ports:
-      - 5000:5000
+      - ${PRESENTATION_BACKEND_HOST_PORT:-7000}:5000
     networks:
       - team07
     volumes:
       - presentation-web-backend_keys:/etc/team07/presentation-web/backend/data-protection-keys
+      - ./appsettings.json:/app/appsettings.json:ro
 
 volumes:
   presentation-web-backend_keys:
