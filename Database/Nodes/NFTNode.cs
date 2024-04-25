@@ -32,6 +32,9 @@ namespace TAG.Database.Nodes
         [JsonProperty("animationUrl")]
         public string? AnimationUrl { get; set; }
 
+        [JsonProperty("nft_vector")]
+        public string NFTVector { get; set; } = null!;
+
         [JsonProperty("description")]
         public string? Description { get; set; }
 
