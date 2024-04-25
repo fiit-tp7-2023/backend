@@ -67,7 +67,7 @@ namespace TAG.Services
                 )
                 .AndWhereIf<NFTNode>(!request.NFTAddress.IsNullOrEmpty(), (nft) => nft.Address == request.NFTAddress)
                 .OptionalMatchIf(
-                    request.TagNames.IsNullOrEmpty(),
+                    !request.TagNames.IsNullOrEmpty(),
                     $"(nft)-[rel:{RelationshipNames.TAGGED}]->(tag:{NodeNames.TAG})"
                 )
                 .WhereIf<TagNode>(!request.TagNames.IsNullOrEmpty(), (tag) => tag.Type.In(request.TagNames));
