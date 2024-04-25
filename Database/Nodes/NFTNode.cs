@@ -51,7 +51,14 @@ namespace TAG.Database.Nodes
                     return new List<Attribute>();
                 }
 
-                return JsonConvert.DeserializeObject<List<Attribute>>(AttributesString) ?? new List<Attribute>();
+                try
+                {
+                    return JsonConvert.DeserializeObject<List<Attribute>>(AttributesString) ?? new List<Attribute>();
+                }
+                catch
+                {
+                    return new List<Attribute>();
+                }
             }
         }
 
